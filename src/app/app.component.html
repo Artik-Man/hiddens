@@ -4,8 +4,11 @@
       <label class="user">
         <input type="radio" name="users" class="visually-hidden">
         <div class="user__info">
-          <span>{{user.name}}</span>
-          <span>{{user.last_message | date:'shortTime'}}</span>
+          <div>
+            <div class="user__name">{{user.name || 'Unknown user'}}</div>
+            <div class="user__id">{{user.id}}</div>
+          </div>
+          <div>{{user.last_message | date:'shortTime'}}</div>
         </div>
       </label>
     </nav>
@@ -18,7 +21,9 @@
 
       <div class="message">
         <div class="message__container">
-          <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius, obcaecati alias illum quasi blanditiis ipsa incidunt modi molestias adipisci quam delectus est numquam architecto qui amet deserunt iusto perspiciatis minus.</div>
+          <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius, obcaecati alias illum quasi
+            blanditiis ipsa incidunt modi molestias adipisci quam delectus est numquam architecto qui amet deserunt
+            iusto perspiciatis minus.</div>
           <div class="date">11:23</div>
         </div>
       </div>

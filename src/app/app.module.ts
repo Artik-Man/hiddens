@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { WebSocketPostService } from './services/ws';
+import { StateService } from './services/state';
 
 @NgModule({
   declarations: [
@@ -10,7 +12,10 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [
+    WebSocketPostService,
+    StateService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -43,14 +43,23 @@ nav.users {
       justify-content: space-between;
       align-items: center;
 
-      span {
+      .user__name {
+        color: @blue;
+      }
+
+      .user__id {
+        font-size: 70%;
+        overflow: 0.7em;
+      }
+
+      >div {
         max-width: 70%;
         padding: 1.25rem 1rem;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
 
-        +span {
+        +div {
           font-size: 70%;
           opacity: .7;
         }
