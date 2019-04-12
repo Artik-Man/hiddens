@@ -1,6 +1,7 @@
 <section class="chat" *ngIf="user">
   <div class="chat__info">
-    <h1>{{user.name || user.id}}</h1>
+    <h1>{{user.name || 'Unknown user'}}</h1>
+    <p>{{user.id}}</p>
   </div>
   <div class="chat__container" #scroll>
 
@@ -17,7 +18,8 @@
 
   </div>
   <form class="chat__form" [formGroup]="form" (ngSubmit)="submit()">
-    <textarea name="text" formControlName="text" (keydown.enter)="submit()" (keyup.enter)="form.controls.text.setValue('')"></textarea>
+    <textarea name="text" formControlName="text" #textarea (keydown.enter)="submit()" (keyup)="keyup($event)"
+      placeholder="Write a message..."></textarea>
     <button>Send</button>
   </form>
 </section>

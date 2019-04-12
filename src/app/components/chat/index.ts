@@ -12,9 +12,12 @@ import { Subscription } from 'rxjs';
 export class ChatComponent implements OnDestroy {
   private _user: User;
   @Input() set user(u: User) {
-    this._user = u;
-    this.subscribe();
-    this.scrollToBottom(true);
+    if (u) {
+      this._user = u;
+      this._user.unread = false;
+      this.subscribe();
+      this.scrollToBottom(true);
+    }
   }
   get user(): User {
     return this._user;
@@ -44,11 +47,21 @@ export class ChatComponent implements OnDestroy {
     }
   }
 
+  public keyup(e: KeyboardEvent) {
+    const textarea: HTMLElement = e.target as HTMLElement;
+    textarea.style.height = textarea.scrollHeight + 'px';
+    if (e.key === 'Enter' && !e.shiftKey) {
+      this.form.controls.text.setValue('');
+      textarea.style.height = '0';
+    }
+  }
+
   private subscribe() {
     this.subs && this.subs.unsubscribe();
     if (this._user) {
       this.subs = this._user.newMessage.subscribe(() => {
         this.scrollToBottom();
+        this._user.unread = false;
       });
     }
   }

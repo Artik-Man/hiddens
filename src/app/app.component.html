@@ -1,7 +1,7 @@
 <div class="page">
   <header>
     <nav class="users" *ngFor="let user of users">
-      <label class="user">
+      <label class="user" [ngClass]="{'unread':user.unread}">
         <input type="radio" name="users" class="visually-hidden" [(ngModel)]="selectedUser" [value]="user">
         <div class="user__info">
           <div>

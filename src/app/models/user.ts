@@ -24,10 +24,14 @@ export class SimpleUser {
 export class User extends SimpleUser {
   public newMessage = new EventEmitter<Message>();
   public lastMessageDate: Date;
+  public unread = false;
 
   private _messages: Message[] = [];
   public set messages(messages: Message[]) {
     messages.forEach(mess => {
+      if (!this.unread && mess.to !== this.id) {
+        this.unread = true;
+      }
       this._messages.push(mess);
       this.newMessage.emit(mess)
     });

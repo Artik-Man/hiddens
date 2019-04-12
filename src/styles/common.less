@@ -3,6 +3,24 @@
 
 * {
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: white @dark-blue;
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px fade(@dark-blue, 50%);
+    background-color: @dark-blue;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: darken(white, 10%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px fade(@dark-blue, 50%);
+    background-color: darken(white, 5%);
+  }
 }
 
 html,
@@ -23,7 +41,7 @@ body {
 }
 
 header {
-  border-right: 1px solid darken(@dark-blue, 5%);
+  border-right: 1px solid fade(@blue, 20%);
 }
 
 app-chat {
@@ -35,7 +53,18 @@ nav.users {
 
   .user {
     display: block;
+    position: relative;
     cursor: pointer;
+
+    &.unread:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: .5rem;
+      height: 100%;
+      background-color: @blue;
+    }
 
     &:hover .user__info,
     input:checked+.user__info {
@@ -86,7 +115,7 @@ nav.users {
 .chat {
   background-color: fade(@blue, 20%);
   display: grid;
-  grid-template-rows: 4rem 1fr 80px;
+  grid-template-rows: 4rem 1fr auto;
   color: white;
   height: 100vh;
   position: relative;
@@ -106,36 +135,24 @@ nav.users {
   }
 
   .chat__info {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     background-color: @dark-blue;
 
     h1 {
-      font-size: 1.5rem;
-      text-align: center;
+      font-size: 1rem;
+      color: @blue;
+      font-weight: normal;
+    }
+
+    p {
+      font-size: 0.7rem;
+      opacity: .7;
     }
   }
 
   .chat__container {
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: white @dark-blue;
-
-    &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px fade(@dark-blue, 50%);
-      background-color: @dark-blue;
-    }
-
-    &::-webkit-scrollbar {
-      width: 4px;
-      background-color: darken(white, 10%);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      box-shadow: inset 0 0 6px fade(@dark-blue, 50%);
-      background-color: darken(white, 5%);
-    }
 
     .message {
       display: block;
@@ -161,6 +178,7 @@ nav.users {
         .text {
           text-align: left;
           padding: 1rem;
+          word-break: break-word;
         }
 
         .date {
@@ -179,7 +197,7 @@ nav.users {
   .chat__form {
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: flex-end;
     background-color: @dark-blue;
 
     textarea {
@@ -190,10 +208,13 @@ nav.users {
       width: 95%;
       resize: none;
       font-size: 1rem;
+      min-height: 3.5rem;
+      max-height: 10.5rem;
+      height: 0;
     }
 
     button {
-      padding: 1rem 2rem;
+      padding: 1.2rem 2rem;
       font-size: 1rem;
       background-color: transparent;
       border: none;
@@ -205,8 +226,8 @@ nav.users {
       }
 
       &:active {
-        padding-top: 1.05rem;
-        padding-bottom: 0.95rem;
+        padding-top: 1.25rem;
+        padding-bottom: 1.15rem;
       }
     }
   }
