@@ -1,11 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Message, WSMessage } from '../models/message';
 
+interface WSSubscriptions {
+  message?: (msg: Message) => void,
+  error?: (err: Event) => void,
+  open?: () => void,
+  close?: () => void
+}
+
 @Injectable()
 export class WebSocketPostService {
   public url: string;
+  public status = WebSocket.CLOSED;
+
   private connection: WebSocket;
   private messageQueue: WSMessage[] = [];
+  private currentSubs: WSSubscriptions;
 
   constructor() { }
 
@@ -13,8 +23,13 @@ export class WebSocketPostService {
     this.url = url;
     if (!this.connection || this.connection.readyState === WebSocket.CLOSED) {
       this.connection = new WebSocket(this.url);
+      this.status = this.connection.readyState;
       this.connection.onopen = () => {
         this.checkQueue();
+        this.status = this.connection.readyState;
+        if (this.currentSubs) {
+          this.subscribe(this.currentSubs);
+        }
       };
     }
     return this;
@@ -26,6 +41,7 @@ export class WebSocketPostService {
     } else {
       this.messageQueue.push(message);
     }
+    this.status = this.connection.readyState;
     return this;
   }
 
@@ -33,34 +49,37 @@ export class WebSocketPostService {
     if (this.connection && this.connection.readyState === WebSocket.OPEN) {
       this.connection.close();
     }
+    this.status = this.connection.readyState;
     return this;
   }
 
-  public subscribe(subs: {
-    message?: (msg: Message) => void,
-    error?: (err: Event) => void,
-    open?: () => void,
-    close?: () => void
-  }) {
+
+  public subscribe(subs: WSSubscriptions) {
+    this.currentSubs = subs;
     if (subs.message) {
       this.connection.onmessage = (msg: MessageEvent) => {
+        this.status = this.connection.readyState;
         const message = new Message(msg.data);
         subs.message(message);
       };
     }
     if (subs.error) {
       this.connection.onerror = (err: Event) => {
+        this.status = this.connection.readyState;
         subs.error(err);
       };
     }
     if (subs.open) {
       this.connection.onopen = () => {
+        this.status = this.connection.readyState;
         this.checkQueue();
         subs.open();
       };
     }
     if (subs.close) {
       this.connection.onclose = () => {
+        this.status = this.connection.readyState;
+        this.connect(this.url);
         subs.close();
       };
     }
@@ -76,4 +95,3 @@ export class WebSocketPostService {
   }
 
 }
- 

@@ -17,14 +17,16 @@ export class AppComponent {
     private state: StateService
   ) {
     console.log(this);
+
     this.wsps
       .connect('wss://ws-post.herokuapp.com/')
-      .send(new WSMessage('SERVER', 'ping'))
       .subscribe({
         message: msg => {
           this.state.parseMessage(msg);
         }
       });
+
+    this.loopPing();
 
     this.state.updateUsers.subscribe(users => {
       this.users = users;
@@ -37,5 +39,14 @@ export class AppComponent {
     if (msg) {
       this.wsps.send(msg);
     }
+  }
+
+  private loopPing() {
+    if (this.wsps.status === WebSocket.OPEN) {
+      this.wsps.send(new WSMessage('SERVER', 'ping'));
+    }
+    setTimeout(() => {
+      this.loopPing();
+    }, 10000);
   }
 }

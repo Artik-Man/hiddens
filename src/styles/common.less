@@ -118,6 +118,24 @@ nav.users {
   .chat__container {
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: white @dark-blue;
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px fade(@dark-blue, 50%);
+      background-color: @dark-blue;
+    }
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: darken(white, 10%);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px fade(@dark-blue, 50%);
+      background-color: darken(white, 5%);
+    }
 
     .message {
       display: block;

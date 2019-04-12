@@ -61,16 +61,15 @@ export class StateService {
         this.users.push(user);
         this.updateUsers.emit(this.users);
       }
-      user.messages = [message];
+      if (message.data && typeof message.data === 'string') {
+        user.messages = [message];
+      }
     }
     if (message.to) {
       if (!this.me) {
         this.me = new SimpleUser(message.to);
       } else if (this.me.id !== message.to) {
         this.me.id = message.to;
-      }
-      if (message.data) {
-
       }
     }
   }

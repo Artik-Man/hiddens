@@ -2,21 +2,22 @@
   <div class="chat__info">
     <h1>{{user.name || user.id}}</h1>
   </div>
-  <div class="chat__container">
+  <div class="chat__container" #scroll>
 
-    <div class="message" *ngFor="let message of user.messages" [ngClass]="{'message_my': message.from!==user.id}"
-      scrollbottom>
+    <div *ngFor="let message of user.messages; let last = last" class="message"
+      [ngClass]="{'message_my': message.from!==user.id}">
       <div class="message__container">
         <div class="text">
           <app-inner-html [html]="message.data"></app-inner-html>
         </div>
         <div class="date">{{message.date | date:'shortTime'}}</div>
       </div>
+      <!-- <div *ngIf="last" scrollbottom></div> -->
     </div>
 
   </div>
   <form class="chat__form" [formGroup]="form" (ngSubmit)="submit()">
-    <textarea name="text" formControlName="text" (keyup.enter)="submit()"></textarea>
+    <textarea name="text" formControlName="text" (keydown.enter)="submit()" (keyup.enter)="form.controls.text.setValue('')"></textarea>
     <button>Send</button>
   </form>
 </section>

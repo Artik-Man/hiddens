@@ -8,8 +8,8 @@ export class ScrollBottomDirective implements AfterViewInit {
   constructor(private el: ElementRef<HTMLElement>) { }
 
   ngAfterViewInit() {
-    const parent = this.el.nativeElement.parentElement;
-    if (parent.scrollTop > parent.scrollHeight - parent.offsetHeight - 200) {
+    const parent = this.el.nativeElement.parentElement.parentElement;
+    if (parent.scrollTop > parent.scrollHeight - parent.offsetHeight - 300) {
       parent.scrollTop = parent.scrollHeight;
     }
   }
