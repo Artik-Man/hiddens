@@ -1,0 +1,27 @@
+<section class="chat" *ngIf="user">
+  <div class="chat__info">
+    <h1>{{user.name || user.id}}</h1>
+  </div>
+  <div class="chat__container">
+
+    <div class="message" *ngFor="let message of user.messages" [ngClass]="{'message_my': message.from!==user.id}"
+      scrollbottom>
+      <div class="message__container">
+        <div class="text">
+          <app-inner-html [html]="message.data"></app-inner-html>
+        </div>
+        <div class="date">{{message.date | date:'shortTime'}}</div>
+      </div>
+    </div>
+
+  </div>
+  <form class="chat__form" [formGroup]="form" (ngSubmit)="submit()">
+    <textarea name="text" formControlName="text" (keyup.enter)="submit()"></textarea>
+    <button>Send</button>
+  </form>
+</section>
+<section class="chat" *ngIf="!user">
+  <div class="info_box">
+    <h6>Please select a chat to start messaging</h6>
+  </div>
+</section>

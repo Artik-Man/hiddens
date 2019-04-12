@@ -26,6 +26,10 @@ header {
   border-right: 1px solid darken(@dark-blue, 5%);
 }
 
+app-chat {
+  display: block;
+}
+
 nav.users {
   color: white;
 
@@ -45,19 +49,19 @@ nav.users {
 
       .user__name {
         color: @blue;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .user__id {
         font-size: 70%;
-        overflow: 0.7em;
+        opacity: 0.7;
       }
 
       >div {
         max-width: 70%;
-        padding: 1.25rem 1rem;
-        overflow: hidden;
+        padding: .75rem 1rem;
         white-space: nowrap;
-        text-overflow: ellipsis;
 
         +div {
           font-size: 70%;
@@ -79,11 +83,27 @@ nav.users {
   overflow: hidden;
 }
 
-section.chat {
+.chat {
   background-color: fade(@blue, 20%);
   display: grid;
   grid-template-rows: 4rem 1fr 80px;
   color: white;
+  height: 100vh;
+  position: relative;
+
+  .info_box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: .5rem 1rem;
+    background-color: fade(black, 70%);
+    border-radius: 3rem;
+
+    h6 {
+      font-size: 70%;
+    }
+  }
 
   .chat__info {
     padding: 1rem;
@@ -96,9 +116,13 @@ section.chat {
   }
 
   .chat__container {
+    overflow-y: auto;
+    overflow-x: hidden;
+
     .message {
       display: block;
       padding: 0.5rem 1rem;
+      position: relative;
 
       &.message_my {
         text-align: right;
@@ -114,6 +138,7 @@ section.chat {
         background-color: @dark-blue;
         border-radius: 5px;
         max-width: 70%;
+        min-width: 7rem;
 
         .text {
           text-align: left;
@@ -160,6 +185,11 @@ section.chat {
       &:hover {
         color: white;
       }
+
+      &:active {
+        padding-top: 1.05rem;
+        padding-bottom: 0.95rem;
+      }
     }
   }
 }
@@ -173,4 +203,12 @@ h6,
 p {
   margin: 0;
   padding: 0;
+}
+
+.view_point {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }

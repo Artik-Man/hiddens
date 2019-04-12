@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Message } from '../models/message';
+import { Message, WSMessage } from '../models/message';
 
 @Injectable()
 export class WebSocketPostService {
@@ -76,8 +76,4 @@ export class WebSocketPostService {
   }
 
 }
-
-interface WSMessage {
-  to: string;
-  data: any;
-}
+ 

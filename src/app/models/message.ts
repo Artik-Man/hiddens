@@ -1,3 +1,19 @@
+export class WSMessage {
+  public to: string;
+  public data: any;
+  constructor(to: string, data: any) {
+    this.to = to;
+    this.data = data;
+  }
+
+  toMessage(): Message {
+    return new Message(JSON.stringify({
+      to: this.to,
+      data: this.data
+    }));
+  }
+}
+
 export class Message {
   public date: Date;
   public from: string;
@@ -7,7 +23,7 @@ export class Message {
   public status: number;
   public connections: string[];
   public connected: string;
-  public disconneced: string;
+  public disconnected: string;
   constructor(msg: string) {
     try {
       const message = JSON.parse(msg);
@@ -19,7 +35,7 @@ export class Message {
         this.error = message.error || null;
         this.connections = message.connections || [];
         this.connected = message.connected || null;
-        this.disconneced = message.disconneced || null;
+        this.disconnected = message.disconnected || null;
       }
     } catch (e) { }
   }

@@ -1,16 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppComponent } from './app.component';
 import { WebSocketPostService } from './services/ws';
 import { StateService } from './services/state';
+import { InnerHTMLComponent } from './components/inner-html';
+
+import { ScrollBottomDirective } from './directives/scrollBottom';
+
+import { AppComponent } from './app.component';
+import { ChatComponent } from './components/chat';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ChatComponent,
+    InnerHTMLComponent,
+    ScrollBottomDirective
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     WebSocketPostService,
