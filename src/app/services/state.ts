@@ -78,7 +78,7 @@ export class StateService {
         this.users.push(user);
         this.updateUsers.emit(this.users);
       }
-      if (message.data && typeof message.data === 'string') {
+      if (message.data && typeof message.data.text === 'string') {
         user.messages = [message];
       }
     }

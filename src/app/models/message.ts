@@ -17,7 +17,7 @@ export class WSMessage {
 export class MessageData {
   public text: string;
   constructor(data: any) {
-    if (data.text && typeof data.text === 'string') {
+    if (data && data.text && typeof data.text === 'string') {
       this.text = data.text;
     } else {
       this.text = '';
@@ -42,7 +42,7 @@ export class Message {
         this.date = new Date();
         this.from = message.from || null;
         this.to = message.to || null;
-        this.data = message.data || null;
+        this.data = new MessageData(message.data || null);
         this.error = message.error || null;
         this.connections = message.connections || [];
         this.connected = message.connected || null;
