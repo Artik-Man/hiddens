@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Message, WSMessage } from '../models/message';
-import { StateService, LocalInfo } from './state';
 
 interface WSSubscriptions {
   message?: (msg: Message) => void;
@@ -13,21 +12,20 @@ interface WSSubscriptions {
 export class WebSocketPostService {
   public url: string;
   public status = WebSocket.CLOSED;
-
+  private xid: string;
   private connection: WebSocket;
   private messageQueue: WSMessage[] = [];
   private currentSubs: WSSubscriptions;
-  private localInfo: LocalInfo;
 
-  constructor(private state: StateService) {
-    this.localInfo = this.state.getLocalInfo();
-  }
+  constructor() { }
 
-  public connect(url: string): WebSocketPostService {
+  public connect(url: string, xid?: string): WebSocketPostService {
     this.url = url;
+    if (xid.length) {
+      this.xid = xid;
+    }
     if (!this.connection || this.connection.readyState === WebSocket.CLOSED) {
-      const xid = this.localInfo.id.length ? [this.localInfo.id] : [];
-      this.connection = new WebSocket(this.url, xid);
+      this.connection = new WebSocket(this.url, this.xid);
       this.status = this.connection.readyState;
       this.connection.onopen = () => {
         this.checkQueue();
@@ -45,6 +43,7 @@ export class WebSocketPostService {
       this.connection.send(JSON.stringify(message));
     } else {
       this.messageQueue.push(message);
+      this.connect(this.url, this.xid);
     }
     this.status = this.connection.readyState;
     return this;
@@ -68,12 +67,6 @@ export class WebSocketPostService {
         subs.message(message);
       };
     }
-    if (subs.error) {
-      this.connection.onerror = (err: Event) => {
-        this.status = this.connection.readyState;
-        subs.error(err);
-      };
-    }
     if (subs.open) {
       this.connection.onopen = () => {
         this.status = this.connection.readyState;
@@ -81,10 +74,17 @@ export class WebSocketPostService {
         subs.open();
       };
     }
+    if (subs.error) {
+      this.connection.onerror = (err: Event) => {
+        this.status = this.connection.readyState;
+        this.connect(this.url, this.xid);
+        subs.error(err);
+      };
+    }
     if (subs.close) {
       this.connection.onclose = () => {
         this.status = this.connection.readyState;
-        this.connect(this.url);
+        this.connect(this.url, this.xid);
         subs.close();
       };
     }

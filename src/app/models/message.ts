@@ -16,11 +16,19 @@ export class WSMessage {
 
 export class MessageData {
   public text: string;
+  public name: string;
+  public _rawData: any;
   constructor(data: any) {
-    if (data && data.text && typeof data.text === 'string') {
-      this.text = data.text;
-    } else {
-      this.text = '';
+    this._rawData = data;
+    if (data) {
+      if (data.text && typeof data.text === 'string') {
+        this.text = data.text;
+      } else {
+        this.text = '';
+      }
+      if (data.name && typeof data.name === 'string') {
+        this.name = data.name;
+      }
     }
   }
 }
