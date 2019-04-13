@@ -24,7 +24,7 @@ export class ChatComponent implements OnDestroy {
   }
 
   @Output() message = new EventEmitter<WSMessage>();
-  @ViewChild('scroll') private scroll: ElementRef;
+  @ViewChild('chatContainer') private chatContainer: ElementRef;
 
   public messageText = '';
 
@@ -39,19 +39,28 @@ export class ChatComponent implements OnDestroy {
   }
 
   public submit() {
-    if (this.messageText.length) {
-      this.message.emit(new WSMessage(this.user.toString(), this.messageText));
+    const message = this.messageText
+      .replace(/\</g, '&lt;')
+      .replace(/\>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/\'/g, '&#x27;')
+      .replace(/\//g, '&#x2F;')
+      .replace(/(^\n+)|(\n+$)/g, '')
+      .replace(/\n{3,}/g, '\n\n');
+    if (message.length) {
+      this.message.emit(new WSMessage(this.user.toString(), message));
       this.messageText = '';
     }
   }
 
-  public updateTextareaSize(e: KeyboardEvent) {
+  public onType(e: KeyboardEvent) {
     const textarea: HTMLElement = e.target as HTMLElement;
     textarea.style.height = textarea.scrollHeight + 'px';
     if (e.key === 'Enter' && !e.shiftKey) {
       this.submit();
       textarea.style.height = '0';
     }
+    ((this.chatContainer.nativeElement) as HTMLElement).style.paddingBottom = 50 + textarea.offsetHeight + 'px';
   }
 
   private subscribe() {
@@ -67,9 +76,8 @@ export class ChatComponent implements OnDestroy {
   private scrollToBottom(force = false) {
     setTimeout(() => {
       try {
-        const element = this.scroll.nativeElement;
-        if (force || element.scrollTop > element.scrollHeight - element.offsetHeight - 300) {
-          element.scrollTop = element.scrollHeight;
+        if (force || document.body.offsetHeight - (window.innerHeight + window.scrollY) < 300) {
+          window.scrollTo(0, document.body.offsetHeight);
         }
       } catch (err) { }
     }, 10);

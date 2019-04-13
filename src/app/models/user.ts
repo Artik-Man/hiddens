@@ -25,6 +25,7 @@ export class User extends SimpleUser {
   public newMessage = new EventEmitter<Message>();
   public lastMessageDate: Date;
   public unread = false;
+  public connected = true;
 
   private _messages: Message[] = [];
   public set messages(messages: Message[]) {

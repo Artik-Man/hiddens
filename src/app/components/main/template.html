@@ -1,7 +1,7 @@
 <mat-sidenav-container class="sidenav-container" (window:resize)="onResize($event)">
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async)">
+    [opened]="true">
     <mat-toolbar>
       <div class="user__name" *ngIf="me">
         {{me.name||'Unknown user'}}

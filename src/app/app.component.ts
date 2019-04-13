@@ -41,7 +41,7 @@ export class AppComponent {
 
   public sendMessage(message: WSMessage) {
     const msg = this.state.inputMessage(message);
-    if (msg) {
+    if (msg && msg.data.length) {
       this.wsps.send(msg);
     }
   }

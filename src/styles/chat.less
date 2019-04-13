@@ -1,9 +1,12 @@
 @import 'colors';
 
 .chat {
-  display: grid;
-  grid-template-rows: 1fr auto;
+  display: block;
   height: 100%;
+
+  &.disabled {
+    background-color: darken(white, 20%);
+  }
 }
 
 .info_box {
@@ -29,6 +32,15 @@
   justify-content: space-between;
   align-items: baseline;
   padding: 0 16px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: white;
+
+  @media (min-width: 600px) {
+    left: 300px;
+  }
 
   .form-field {
     display: block;
@@ -44,8 +56,7 @@
 }
 
 .chat__container {
-  overflow-y: auto;
-  overflow-x: hidden;
+  padding-top: 80px;
 
   .message {
     display: block;

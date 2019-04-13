@@ -1,5 +1,5 @@
-<section class="chat" *ngIf="user">
-  <div class="chat__container" #scroll>
+<section class="chat" *ngIf="user" [ngClass]="{'disabled':!user.connected}">
+  <div class="chat__container" #chatContainer>
 
     <div *ngFor="let message of user.messages; let last = last" class="message"
       [ngClass]="{'message_my': message.from!==user.id}">
@@ -14,8 +14,8 @@
   </div>
   <div class="chat__form">
     <mat-form-field class="form-field">
-      <textarea matInput placeholder="Write a message..." name="text" #textarea [(ngModel)]="messageText"
-        (keydown.enter)="submit()" (keyup)="updateTextareaSize($event)"></textarea>
+      <textarea matInput [placeholder]="user.connected?'Write a message...':'User logged out'" name="text" autofocus #textarea [(ngModel)]="messageText"
+        (keyup)="onType($event)" [disabled]="!user.connected"></textarea>
     </mat-form-field>
     <button mat-icon-button color="primary" (click)="submit()">
       <mat-icon aria-label="Send">send</mat-icon>

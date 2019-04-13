@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
 .sidenav-container {
   height: 100%;
 }
@@ -19,10 +24,15 @@
 }
 
 .mat-toolbar.mat-primary {
-  position: absolute;
-  top: 0;
+  position: fixed;
   z-index: 1;
+  top: 0;
   right: 0;
+  left: 0;
+
+  @media (min-width: 600px) {
+    left: 300px;
+  }
 
   .user__name {
     padding: 12px 0;

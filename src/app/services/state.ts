@@ -44,6 +44,9 @@ export class StateService {
           return false;
         })
         .map(con => new User(con));
+      deleteUsers.forEach(u => {
+        u.connected = false;
+      });
       this.users = this.users.filter(u => !deleteUsers.includes(u.id)).concat(newUsers);
       this.updateUsers.emit(this.users);
     }
@@ -52,6 +55,10 @@ export class StateService {
       this.updateUsers.emit(this.users);
     }
     if (message.disconnected) {
+      const user = this.users.find(u => u.id === message.disconnected);
+      if (user) {
+        user.connected = false;
+      }
       this.users = this.users.filter(u => u.id !== message.disconnected);
       this.updateUsers.emit(this.users);
     }
