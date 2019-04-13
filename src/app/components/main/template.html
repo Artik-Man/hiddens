@@ -2,11 +2,18 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar>Users</mat-toolbar>
+    <mat-toolbar>
+      <div class="user__name" *ngIf="me">
+        {{me.name||'Unknown user'}}
+        <div class="user__id">
+          Your id: {{me.id}}
+        </div>
+      </div>
+    </mat-toolbar>
 
     <mat-radio-group aria-labelledby="User list" class="user_list" [(ngModel)]="selectedUser">
       <mat-radio-button class="user_list__user" *ngFor="let user of users" [value]="user"
-        [ngClass]="{'unread':user.unread, 'selected':selectedUser===user}">
+        [ngClass]="{'unread':user.unread, 'selected':selectedUser===user}" (click)="closeNav()">
         <div matRipple matRippleColor="rgba(0,0,0,.1)" class="user_list__user__container">
           <div class="user__name">
             {{user.name||'Unknown user'}}

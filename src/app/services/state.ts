@@ -5,6 +5,7 @@ import { User, SimpleUser } from '../models/user';
 @Injectable()
 export class StateService {
   public updateUsers = new EventEmitter<User[]>();
+  public updateMe = new EventEmitter<SimpleUser>();
 
   private users: User[] = [];
   private me: SimpleUser;
@@ -68,8 +69,10 @@ export class StateService {
     if (message.to) {
       if (!this.me) {
         this.me = new SimpleUser(message.to);
+        this.updateMe.emit(this.me);
       } else if (this.me.id !== message.to) {
         this.me.id = message.to;
+        this.updateMe.emit(this.me);
       }
     }
   }

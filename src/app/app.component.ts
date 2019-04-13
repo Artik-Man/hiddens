@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { WebSocketPostService } from './services/ws';
 import { StateService } from './services/state';
 import { WSMessage } from './models/message';
-import { User } from './models/user';
+import { User, SimpleUser } from './models/user';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { User } from './models/user';
 })
 export class AppComponent {
   public users: User[] = [];
-  public selectedUser: User;
+  public me: SimpleUser;
 
   constructor(
     private wsps: WebSocketPostService,
@@ -32,10 +32,10 @@ export class AppComponent {
       this.users = users;
     });
 
-  }
+    this.state.updateMe.subscribe(me => {
+      this.me = me;
+    });
 
-  public selectUser(user: User) {
-    this.selectedUser = user;
   }
 
   public sendMessage(message: WSMessage) {

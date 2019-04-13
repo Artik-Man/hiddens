@@ -40,7 +40,8 @@ export class ChatComponent implements OnDestroy {
 
   public submit() {
     if (this.messageText.length) {
-      this.message.emit(new WSMessage(this.user.toString(), this.messageText))
+      this.message.emit(new WSMessage(this.user.toString(), this.messageText));
+      this.messageText = '';
     }
   }
 
@@ -48,7 +49,7 @@ export class ChatComponent implements OnDestroy {
     const textarea: HTMLElement = e.target as HTMLElement;
     textarea.style.height = textarea.scrollHeight + 'px';
     if (e.key === 'Enter' && !e.shiftKey) {
-      this.messageText = '';
+      this.submit();
       textarea.style.height = '0';
     }
   }

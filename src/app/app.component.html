@@ -16,5 +16,5 @@
   <app-chat [user]="selectedUser" (message)="sendMessage($event)"></app-chat>
 </div> -->
 <div class="page">
-  <app-main [users]="users" (message)="sendMessage($event)"></app-main>
+  <app-main [users]="users" [me]="me" (message)="sendMessage($event)"></app-main>
 </div>
