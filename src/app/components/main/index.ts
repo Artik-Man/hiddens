@@ -36,7 +36,7 @@ export class MainComponent {
     });
   }
 
-  public onResize() {
+  public onResize(event) {
     this.isHandset$.subscribe(handset => {
       if (!handset) {
         this.drawer.open();
