@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { WSMessage } from 'src/app/models/message';
+import { WSMessage, MessageData } from 'src/app/models/message';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -48,7 +48,8 @@ export class ChatComponent implements OnDestroy {
       .replace(/(^\n+)|(\n+$)/g, '')
       .replace(/\n{3,}/g, '\n\n');
     if (message.length) {
-      this.message.emit(new WSMessage(this.user.toString(), message));
+      const msg = new MessageData({ text: message });
+      this.message.emit(new WSMessage(this.user.toString(), msg));
       this.messageText = '';
     }
   }

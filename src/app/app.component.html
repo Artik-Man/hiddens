@@ -1,3 +1,15 @@
 <div class="page" [ngStyle]="{'min-height':ios_height_fix}" (window:resize)="onResize($event)">
-  <app-main [users]="users" [me]="me" (message)="sendMessage($event)"></app-main>
+  <app-main [users]="users" [me]="me" (message)="sendMessage($event)" *ngIf="startMessaging"></app-main>
+  <div class="fixed-dialog" *ngIf="!startMessaging">
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Think up your nickname" autofocus [(ngModel)]="nickname" (keydown.enter)="start()">
+      <button matSuffix mat-icon-button aria-label="Done" color="primary" (click)="start()"
+        [disabled]="nickname.length<3">
+        <mat-icon>done</mat-icon>
+      </button>
+      <mat-error *ngIf="nickname.length<3">
+        Too short nick
+      </mat-error>
+    </mat-form-field>
+  </div>
 </div>

@@ -1,7 +1,7 @@
 export class WSMessage {
   public to: string;
-  public data: any;
-  constructor(to: string, data: any) {
+  public data: MessageData | string;
+  constructor(to: string, data: MessageData | string) {
     this.to = to;
     this.data = data;
   }
@@ -14,11 +14,22 @@ export class WSMessage {
   }
 }
 
+export class MessageData {
+  public text: string;
+  constructor(data: any) {
+    if (data.text && typeof data.text === 'string') {
+      this.text = data.text;
+    } else {
+      this.text = '';
+    }
+  }
+}
+
 export class Message {
   public date: Date;
   public from: string;
   public to: string;
-  public data: any;
+  public data: MessageData;
   public error: string;
   public status: number;
   public connections: string[];

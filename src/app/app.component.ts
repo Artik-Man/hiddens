@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WebSocketPostService } from './services/ws';
 import { StateService } from './services/state';
-import { WSMessage } from './models/message';
+import { WSMessage, MessageData } from './models/message';
 import { User, SimpleUser } from './models/user';
 
 @Component({
@@ -12,15 +12,38 @@ export class AppComponent {
   public users: User[] = [];
   public me: SimpleUser;
   public ios_height_fix = '100vh';
+  public startMessaging = false;
+  public nickname = '';
 
   constructor(
     private wsps: WebSocketPostService,
     private state: StateService
   ) {
     console.log(this);
+    const localInfo = this.state.getLocalInfo();
+    if (localInfo.name.length) {
+      this.startMessaging = true;
+      this.state.setMe(localInfo);
+      this.me = new SimpleUser(localInfo.id);
+      this.me.name = localInfo.name;
+      this.startServices();
+    }
+  }
 
+  public sendMessage(message: WSMessage) {
+    const msg = this.state.inputMessage(message);
+    if (msg && msg.data instanceof MessageData && msg.data.text.length) {
+      this.wsps.send(msg);
+    }
+  }
+
+  public onResize(event) {
+    this.ios_height_fix = window.innerHeight + 'px';
+  }
+
+  private startServices() {
     this.wsps
-      .connect('wss://ws-post.herokuapp.com/')
+      .connect('ws://ws-post.herokuapp.com/')
       .subscribe({
         message: msg => {
           this.state.parseMessage(msg);
@@ -39,15 +62,12 @@ export class AppComponent {
 
   }
 
-  public sendMessage(message: WSMessage) {
-    const msg = this.state.inputMessage(message);
-    if (msg && msg.data.length) {
-      this.wsps.send(msg);
+  public start() {
+    this.startMessaging = this.nickname.length >= 3;
+    if (this.startMessaging) {
+      this.state.setMe({ name: this.nickname });
+      this.startServices();
     }
-  }
-
-  public onResize(event) {
-    this.ios_height_fix = window.innerHeight + 'px';
   }
 
   private loopPing() {

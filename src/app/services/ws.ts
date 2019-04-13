@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Message, WSMessage } from '../models/message';
+import { StateService, LocalInfo } from './state';
 
 interface WSSubscriptions {
-  message?: (msg: Message) => void,
-  error?: (err: Event) => void,
-  open?: () => void,
-  close?: () => void
+  message?: (msg: Message) => void;
+  error?: (err: Event) => void;
+  open?: () => void;
+  close?: () => void;
 }
 
 @Injectable()
@@ -16,13 +17,17 @@ export class WebSocketPostService {
   private connection: WebSocket;
   private messageQueue: WSMessage[] = [];
   private currentSubs: WSSubscriptions;
+  private localInfo: LocalInfo;
 
-  constructor() { }
+  constructor(private state: StateService) {
+    this.localInfo = this.state.getLocalInfo();
+  }
 
   public connect(url: string): WebSocketPostService {
     this.url = url;
     if (!this.connection || this.connection.readyState === WebSocket.CLOSED) {
-      this.connection = new WebSocket(this.url);
+      const xid = this.localInfo.id.length ? [this.localInfo.id] : [];
+      this.connection = new WebSocket(this.url, xid);
       this.status = this.connection.readyState;
       this.connection.onopen = () => {
         this.checkQueue();

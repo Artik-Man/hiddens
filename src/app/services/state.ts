@@ -2,6 +2,11 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Message, WSMessage } from '../models/message';
 import { User, SimpleUser } from '../models/user';
 
+export interface LocalInfo {
+  id: string;
+  name: string;
+}
+
 @Injectable()
 export class StateService {
   public updateUsers = new EventEmitter<User[]>();
@@ -62,7 +67,11 @@ export class StateService {
       this.users = this.users.filter(u => u.id !== message.disconnected);
       this.updateUsers.emit(this.users);
     }
-    if (message.from && message.from !== 'SERVER') {
+    if (message.from && message.from === 'SERVER' && message.to) {
+      const localInfo = this.getLocalInfo();
+      localInfo.id = message.to;
+      this.setLocalInfo(localInfo);
+    } else if (message.from) {
       let user = this.users.find(u => u.id === message.from);
       if (!user) {
         user = new User(message.from);
@@ -74,15 +83,41 @@ export class StateService {
       }
     }
     if (message.to) {
-      if (!this.me) {
-        this.me = new SimpleUser(message.to);
-        this.updateMe.emit(this.me);
-      } else if (this.me.id !== message.to) {
-        this.me.id = message.to;
+      if (this.me.id !== message.to) {
+        this.setMe({ id: message.to });
         this.updateMe.emit(this.me);
       }
     }
   }
 
+  public getMe(): SimpleUser {
+    return this.me;
+  }
+
+  public setMe(info: { id?: string, name?: string }) {
+    if (!this.me) {
+      this.me = new SimpleUser(info.id || '');
+    }
+    if (info.id) {
+      this.me.id = info.id;
+    }
+    if (info.name) {
+      this.me.name = info.name;
+    }
+    this.setLocalInfo({
+      id: this.me.id,
+      name: this.me.name
+    });
+  }
+
+  public getLocalInfo(): LocalInfo {
+    return JSON.parse(localStorage.getItem('wsp.user') || JSON.stringify({ name: '', id: '' }));
+  }
+
+  public setLocalInfo(info: LocalInfo) {
+    localStorage.setItem('wsp.user', JSON.stringify(info));
+  }
 
 }
+
+

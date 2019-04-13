@@ -51,6 +51,23 @@ body {
   font-size: .7rem;
 }
 
+.fixed-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  background: #fff;
+  width: 300px;
+  padding: 16px;
+  box-shadow: 0 0 0 100vmax fade(black, 80%);
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+
+  .form-field {
+    width: 100%;
+  }
+}
+
 .visually-hidden {
   position: absolute !important;
   clip: rect(1px 1px 1px 1px);

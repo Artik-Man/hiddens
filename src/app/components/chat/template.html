@@ -5,7 +5,7 @@
       [ngClass]="{'message_my': message.from!==user.id}">
       <div class="message__container">
         <div class="text">
-          <app-inner-html [html]="message.data"></app-inner-html>
+          <app-inner-html [html]="message.data && message.data.text"></app-inner-html>
         </div>
         <div class="date">{{message.date | date:'shortTime'}}</div>
       </div>
