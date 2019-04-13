@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 
 import { WebSocketPostService } from './services/ws';
 import { StateService } from './services/state';
@@ -20,8 +22,12 @@ import { ChatComponent } from './components/chat';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // Material
+    MatButtonModule,
+    MatCheckboxModule
   ],
   providers: [
     WebSocketPostService,
