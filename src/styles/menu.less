@@ -1,0 +1,56 @@
+@import 'colors';
+
+.user_list {
+  display: block;
+
+  .user_list__user {
+    display: block;
+
+    &.unread {
+      .user_list__user__container {
+        box-shadow: inset -4px 0 0 0 @blue;
+      }
+    }
+
+    &.selected {
+      .user_list__user__container {
+        background-color: fade(@blue, 10%);
+      }
+    }
+
+    .mat-radio-label {
+      display: block;
+
+      .mat-radio-label-content {
+        display: block;
+      }
+    }
+
+    .mat-radio-container {
+      .visually-hidden;
+    }
+
+    .mat-radio-label-content {
+      padding: 0;
+    }
+
+    .user_list__user__container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .user__name {
+
+      color: @blue;
+    }
+
+    .user_list__user__date {
+      color: darken(white, 30%);
+      font-size: .7rem;
+      padding: 1rem .5rem;
+    }
+  }
+}

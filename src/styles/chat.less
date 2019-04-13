@@ -1,0 +1,89 @@
+@import 'colors';
+
+.chat {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+}
+
+.info_box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 16px;
+  background-color: fade(black, 70%);
+  border-radius: 32px;
+  box-shadow: 0 0 0 100vmax fade(black, 30%);
+
+  h6 {
+    font-size: 16px;
+    color: white;
+    font-weight: normal;
+    margin: 0;
+  }
+}
+
+.chat__form {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 16px;
+
+  .form-field {
+    display: block;
+    width: 95%;
+
+    textarea {
+      resize: none;
+      min-height: 30px;
+      max-height: 120px;
+      height: 0;
+    }
+  }
+}
+
+.chat__container {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .message {
+    display: block;
+    padding: 0.5rem 1rem;
+    position: relative;
+    color: white;
+
+    &.message_my {
+      text-align: right;
+
+      .message__container {
+        background-color: @blue-light;
+      }
+    }
+
+    .message__container {
+      display: inline-block;
+      position: relative;
+      background-color: @dark-blue;
+      border-radius: 5px;
+      max-width: 70%;
+      min-width: 7rem;
+
+      .text {
+        text-align: left;
+        padding: 1rem;
+        word-break: break-word;
+      }
+
+      .date {
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-size: 70%;
+        opacity: .7;
+        padding: 3px 1rem;
+      }
+    }
+  }
+}

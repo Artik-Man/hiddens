@@ -1,8 +1,4 @@
 <section class="chat" *ngIf="user">
-  <div class="chat__info">
-    <h1>{{user.name || 'Unknown user'}}</h1>
-    <p>{{user.id}}</p>
-  </div>
   <div class="chat__container" #scroll>
 
     <div *ngFor="let message of user.messages; let last = last" class="message"
@@ -13,15 +9,18 @@
         </div>
         <div class="date">{{message.date | date:'shortTime'}}</div>
       </div>
-      <!-- <div *ngIf="last" scrollbottom></div> -->
     </div>
 
   </div>
-  <form class="chat__form" [formGroup]="form" (ngSubmit)="submit()">
-    <textarea name="text" formControlName="text" #textarea (keydown.enter)="submit()" (keyup)="keyup($event)"
-      placeholder="Write a message..."></textarea>
-    <button>Send</button>
-  </form>
+  <div class="chat__form">
+    <mat-form-field class="form-field">
+      <textarea matInput placeholder="Write a message..." name="text" #textarea [(ngModel)]="messageText"
+        (keydown.enter)="submit()" (keyup)="updateTextareaSize($event)"></textarea>
+    </mat-form-field>
+    <button mat-icon-button color="primary" (click)="submit()">
+      <mat-icon aria-label="Send">send</mat-icon>
+    </button>
+  </div>
 </section>
 <section class="chat" *ngIf="!user">
   <div class="info_box">

@@ -1,0 +1,44 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar>Users</mat-toolbar>
+
+    <mat-radio-group aria-labelledby="User list" class="user_list" [(ngModel)]="selectedUser">
+      <mat-radio-button class="user_list__user" *ngFor="let user of users" [value]="user"
+        [ngClass]="{'unread':user.unread, 'selected':selectedUser===user}">
+        <div matRipple matRippleColor="rgba(0,0,0,.1)" class="user_list__user__container">
+          <div class="user__name">
+            {{user.name||'Unknown user'}}
+            <div class="user__id">
+              {{user.id}}
+            </div>
+          </div>
+          <div class="user_list__user__date">
+            {{user.lastMessageDate | date:'shortTime'}}
+          </div>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+
+      <div class="user__name" *ngIf="selectedUser">
+        {{selectedUser.name||'Unknown user'}}
+        <div class="user__id">
+          {{selectedUser.id}}
+        </div>
+      </div>
+
+    </mat-toolbar>
+
+    <app-chat [user]="selectedUser" (message)="sendMessage($event)"></app-chat>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

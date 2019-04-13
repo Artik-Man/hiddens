@@ -1,4 +1,4 @@
-<div class="page">
+<!-- <div class="page">
   <header>
     <nav class="users" *ngFor="let user of users">
       <label class="user" [ngClass]="{'unread':user.unread}">
@@ -14,4 +14,7 @@
     </nav>
   </header>
   <app-chat [user]="selectedUser" (message)="sendMessage($event)"></app-chat>
+</div> -->
+<div class="page">
+  <app-main [users]="users" (message)="sendMessage($event)"></app-main>
 </div>

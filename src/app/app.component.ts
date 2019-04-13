@@ -34,6 +34,10 @@ export class AppComponent {
 
   }
 
+  public selectUser(user: User) {
+    this.selectedUser = user;
+  }
+
   public sendMessage(message: WSMessage) {
     const msg = this.state.inputMessage(message);
     if (msg) {
