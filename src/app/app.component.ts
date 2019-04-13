@@ -11,6 +11,7 @@ import { User, SimpleUser } from './models/user';
 export class AppComponent {
   public users: User[] = [];
   public me: SimpleUser;
+  public ios_height_fix = '100vh';
 
   constructor(
     private wsps: WebSocketPostService,
@@ -43,6 +44,10 @@ export class AppComponent {
     if (msg) {
       this.wsps.send(msg);
     }
+  }
+
+  public onResize(event) {
+    this.ios_height_fix = window.innerHeight + 'px';
   }
 
   private loopPing() {

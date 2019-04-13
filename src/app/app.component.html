@@ -1,20 +1,3 @@
-<!-- <div class="page">
-  <header>
-    <nav class="users" *ngFor="let user of users">
-      <label class="user" [ngClass]="{'unread':user.unread}">
-        <input type="radio" name="users" class="visually-hidden" [(ngModel)]="selectedUser" [value]="user">
-        <div class="user__info">
-          <div>
-            <div class="user__name">{{user.name || 'Unknown user'}}</div>
-            <div class="user__id">{{user.id}}</div>
-          </div>
-          <div>{{user.lastMessageDate | date:'shortTime'}}</div>
-        </div>
-      </label>
-    </nav>
-  </header>
-  <app-chat [user]="selectedUser" (message)="sendMessage($event)"></app-chat>
-</div> -->
-<div class="page">
+<div class="page" [ngStyle]="{'height':ios_height_fix}" (window:resize)="onResize($event)">
   <app-main [users]="users" [me]="me" (message)="sendMessage($event)"></app-main>
 </div>

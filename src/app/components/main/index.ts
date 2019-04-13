@@ -35,4 +35,12 @@ export class MainComponent {
       }
     });
   }
+
+  public onResize() {
+    this.isHandset$.subscribe(handset => {
+      if (!handset) {
+        this.drawer.open();
+      }
+    });
+  }
 }
