@@ -43,7 +43,7 @@ export class AppComponent {
 
   private startServices() {
     this.wsps
-      .connect('ws://ws-post.herokuapp.com/')
+      .connect('wss://ws-post.herokuapp.com/')
       .subscribe({
         message: msg => {
           this.state.parseMessage(msg);
