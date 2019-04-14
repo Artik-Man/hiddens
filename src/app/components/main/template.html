@@ -12,7 +12,7 @@
     </mat-toolbar>
 
     <mat-radio-group aria-labelledby="User list" class="user_list" [(ngModel)]="selectedUser">
-      <mat-radio-button class="user_list__user" *ngFor="let user of users" [value]="user"
+      <mat-radio-button class="user_list__user" *ngFor="let user of users | orderBy:['-lastMessageDate']" [value]="user"
         [ngClass]="{'unread':user.unread, 'selected':selectedUser===user}" (click)="closeNav()">
         <div matRipple matRippleColor="rgba(0,0,0,.1)" class="user_list__user__container">
           <div class="user__name">
@@ -29,7 +29,7 @@
     </mat-radio-group>
 
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content >
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
@@ -44,7 +44,7 @@
       </div>
 
     </mat-toolbar>
-
+<div (panright)="drawer.open()" class="pan-menu"></div>
     <app-chat [user]="selectedUser" (message)="sendMessage($event)"></app-chat>
 
   </mat-sidenav-content>

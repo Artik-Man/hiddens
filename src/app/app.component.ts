@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { WebSocketPostService } from './services/ws';
 import { StateService } from './services/state';
-import { WSMessage, MessageData } from './models/message';
+import { WSMessage } from './models/message';
 import { User, SimpleUser } from './models/user';
 
 @Component({
