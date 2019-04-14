@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StateService } from './services/state';
 import { WSMessage } from './models/message';
 import { User, SimpleUser } from './models/user';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public users: User[] = [];
   public me: SimpleUser;
   public ios_height_fix = '100vh';
@@ -15,9 +16,11 @@ export class AppComponent {
   public nickname = '';
 
   constructor(
-    private state: StateService
+    private state: StateService,
+    private swUpdate: SwUpdate
   ) {
     console.log(this);
+
     const localInfo = this.state.getLocalInfo();
 
     if (localInfo.name && localInfo.name.length) {
@@ -32,6 +35,16 @@ export class AppComponent {
     this.state.updateMe.subscribe(me => {
       this.me = me;
     });
+  }
+
+  ngOnInit() {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        if (confirm('New version available. Load New Version?')) {
+          window.location.reload();
+        }
+      });
+    }
   }
 
   public sendMessage(message: WSMessage) {

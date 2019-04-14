@@ -12,6 +12,8 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG,
 } from '@angular/platform-browser';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 // Services
 import { WebSocketPostService } from './services/ws';
 import { StateService } from './services/state';
@@ -24,8 +26,6 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './components/main';
 import { InnerHTMLComponent } from './components/inner-html';
 import { ChatComponent } from './components/chat';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 
 declare var Hammer: any;
 export class MyHammerConfig extends HammerGestureConfig {
@@ -61,6 +61,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatRadioModule,
     MatRippleModule,
     MatInputModule,
+    // ServiceWorker
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

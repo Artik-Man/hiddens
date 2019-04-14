@@ -1,11 +1,13 @@
 {
-  "name": "hiddens",
-  "short_name": "hiddens",
+  "name": "Hiddens",
+  "lang": "en",
+  "short_name": "Hiddens",
   "theme_color": "#1C4B6C",
   "background_color": "#fafafa",
-  "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "/hiddens/",
+  "start_url": "/hiddens/",
   "icons": [
     {
       "src": "assets/icons/icon-48x48.png",
