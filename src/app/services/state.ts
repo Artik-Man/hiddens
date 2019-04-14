@@ -37,41 +37,16 @@ export class StateService {
     if (!message) {
       return;
     }
-    if (message.connections.length) {
-      const users = this.users.map(user => user.id);
-      const deleteUsers = [];
-      const newUsers = message.connections
-        .filter(con => {
-          if (!users.includes(con)) {
-            return true;
-          }
-          deleteUsers.push(con);
-          return false;
-        })
-        .map(con => new User(con));
-      deleteUsers.forEach(u => {
-        u.connected = false;
-      });
-      this.users = this.users.filter(u => !deleteUsers.includes(u.id)).concat(newUsers);
-      this.updateUsers.emit(this.users);
-      if (this.me.name && this.me.name.length) {
-        this.users.forEach(u => {
-          this.wsps.send(new WSMessage(u.id, new MessageData({ name: this.me.name })));
-        });
+    if (message.to && (message.connections.length || message.connected || message.disconnected)) {
+      const connected: string[] = message.connections;
+      if (message.connected) {
+        connected.push(message.connected);
       }
-    }
-    if (message.connected) {
-      this.users.push(new User(message.connected));
-      this.updateUsers.emit(this.users);
-      this.wsps.send(new WSMessage(message.connected, new MessageData({ name: this.me.name })));
-    }
-    if (message.disconnected) {
-      const user = this.users.find(u => u.id === message.disconnected);
-      if (user) {
-        user.connected = false;
+      const disconnected: string[] = [];
+      if (message.disconnected) {
+        disconnected.push(message.disconnected);
       }
-      this.users = this.users.filter(u => u.id !== message.disconnected);
-      this.updateUsers.emit(this.users);
+      this.usersDB(message.to, connected, disconnected);
     }
     if (message.from && message.from === 'SERVER' && message.to) {
       const localInfo = this.getLocalInfo();
@@ -95,11 +70,8 @@ export class StateService {
         }
       }
     }
-    if (message.to) {
-      if (this.me.id !== message.to) {
-        this.setMe({ id: message.to });
-        this.updateMe.emit(this.me);
-      }
+    if (message.to && this.me.id !== message.to) {
+      this.setMe({ id: message.to });
     }
   }
 
@@ -159,6 +131,26 @@ export class StateService {
     });
     const localInfo = Object.assign({}, this.getLocalInfo(), inf);
     localStorage.setItem('wsp.user', JSON.stringify(localInfo));
+  }
+
+  private usersDB(me: string, connected: string[], disconnected: string[]) {
+    const users = {};
+    this.users.forEach(user => {
+      users[user.id] = user;
+    });
+    connected.forEach(id => {
+      if (!users[id] && id !== me) {
+        users[id] = new User(id);
+        this.wsps.send(new WSMessage(id, new MessageData({ name: this.me.name })));
+      }
+    });
+    disconnected.forEach(id => {
+      if (users[id]) {
+        delete users[id];
+      }
+    });
+    this.users = Object.values(users);
+    this.updateUsers.emit(this.users);
   }
 
   private loopPing() {
