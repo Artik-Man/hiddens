@@ -24,7 +24,7 @@ export class ChatComponent implements OnDestroy {
   }
 
   @Output() message = new EventEmitter<WSMessage>();
-  @ViewChild('chatContainer') private chatContainer: ElementRef;
+  @ViewChild('chatContainer', { static: false }) private chatContainer: ElementRef;
 
   public messageText = '';
 

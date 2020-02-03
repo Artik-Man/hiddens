@@ -15,7 +15,7 @@ export class MainComponent {
   @Input() users: User[] = [];
   @Input() me: SimpleUser;
   @Output() message = new EventEmitter<WSMessage>();
-  @ViewChild(MatSidenav) drawer: MatSidenav;
+  @ViewChild(MatSidenav, { static: true }) drawer: MatSidenav;
 
   public isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(map(result => result.matches));
   public selectedUser: User;
