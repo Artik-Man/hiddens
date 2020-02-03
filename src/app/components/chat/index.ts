@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { User } from 'src/app/models/user';
-import { WSMessage, MessageData } from 'src/app/models/message';
-import { Subscription } from 'rxjs';
+import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy} from '@angular/core';
+import {User} from 'src/app/models/user';
+import {WSMessage, MessageData} from 'src/app/models/message';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -19,12 +19,13 @@ export class ChatComponent implements OnDestroy {
       this.scrollToBottom(true);
     }
   }
+
   get user(): User {
     return this._user;
   }
 
   @Output() message = new EventEmitter<WSMessage>();
-  @ViewChild('chatContainer', { static: false }) private chatContainer: ElementRef;
+  @ViewChild('chatContainer', {static: false}) private chatContainer: ElementRef;
 
   public messageText = '';
 
@@ -35,20 +36,22 @@ export class ChatComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs && this.subs.unsubscribe();
+    if (this.subs) {
+      this.subs.unsubscribe();
+    }
   }
 
   public submit() {
     const message = this.messageText
-      .replace(/\</g, '&lt;')
-      .replace(/\>/g, '&gt;')
-      .replace(/\"/g, '&quot;')
-      .replace(/\'/g, '&#x27;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
       .replace(/\//g, '&#x2F;')
       .replace(/(^\n+)|(\n+$)/g, '')
       .replace(/\n{3,}/g, '\n\n');
     if (message.length) {
-      const msg = new MessageData({ text: message });
+      const msg = new MessageData({text: message});
       this.message.emit(new WSMessage(this.user.toString(), msg));
       this.messageText = '';
     }
@@ -65,7 +68,9 @@ export class ChatComponent implements OnDestroy {
   }
 
   private subscribe() {
-    this.subs && this.subs.unsubscribe();
+    if (this.subs) {
+      this.subs.unsubscribe();
+    }
     if (this._user) {
       this.subs = this._user.newMessage.subscribe(() => {
         this.scrollToBottom();
@@ -80,7 +85,8 @@ export class ChatComponent implements OnDestroy {
         if (force || document.body.offsetHeight - (window.innerHeight + window.scrollY) < 300) {
           window.scrollTo(0, document.body.offsetHeight);
         }
-      } catch (err) { }
+      } catch (err) {
+      }
     }, 10);
   }
 

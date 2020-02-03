@@ -15,10 +15,10 @@ export class InnerHTMLComponent implements OnChanges {
 
   ngOnChanges() {
     const html = this.html
-      .replace(/\</g, '&lt;')
-      .replace(/\>/g, '&gt;')
-      .replace(/\"/g, '&quot;')
-      .replace(/\'/g, '&#x27;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
       .replace(/\//g, '&#x2F;')
       .replace(/(^\n+)|(\n+$)/g, '')
       .replace(/\n{3,}/g, '\n\n')

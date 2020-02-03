@@ -1,7 +1,7 @@
 <section class="chat" *ngIf="user" [ngClass]="{'disabled':!user.connected}">
   <div class="chat__container" #chatContainer>
 
-    <div *ngFor="let message of user.messages; let last = last" class="message"
+    <div *ngFor="let message of user.messages" class="message"
       [ngClass]="{'message_my': message.from!==user.id}">
       <div class="message__container">
         <div class="text">

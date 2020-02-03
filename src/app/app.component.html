@@ -1,4 +1,4 @@
-<div class="page" [ngStyle]="{'min-height':ios_height_fix}" (window:resize)="onResize($event)">
+<div class="page" [ngStyle]="{'min-height':iosHeightFix}" (window:resize)="onResize($event)">
   <app-main [users]="users" [me]="me" (message)="sendMessage($event)" *ngIf="startMessaging"></app-main>
   <div class="fixed-dialog" *ngIf="!startMessaging">
     <mat-form-field class="form-field">

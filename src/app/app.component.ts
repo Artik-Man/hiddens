@@ -11,7 +11,7 @@ import { SwUpdate } from '@angular/service-worker';
 export class AppComponent implements OnInit {
   public users: User[] = [];
   public me: SimpleUser;
-  public ios_height_fix = '100vh';
+  public iosHeightFix = '100vh';
   public startMessaging = false;
   public nickname = '';
 
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
   }
 
   public onResize(event) {
-    this.ios_height_fix = window.innerHeight + 'px';
+    this.iosHeightFix = window.innerHeight + 'px';
   }
 
   public start() {

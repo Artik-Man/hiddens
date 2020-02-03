@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { User, SimpleUser } from 'src/app/models/user';
-import { WSMessage } from 'src/app/models/message';
-import { MatSidenav } from '@angular/material';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {User, SimpleUser} from 'src/app/models/user';
+import {WSMessage} from 'src/app/models/message';
+import {MatSidenav} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-main',
@@ -15,7 +15,7 @@ export class MainComponent {
   @Input() users: User[] = [];
   @Input() me: SimpleUser;
   @Output() message = new EventEmitter<WSMessage>();
-  @ViewChild(MatSidenav, { static: true }) drawer: MatSidenav;
+  @ViewChild(MatSidenav, {static: true}) drawer: MatSidenav;
 
   public isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(map(result => result.matches));
   public selectedUser: User;
@@ -31,15 +31,15 @@ export class MainComponent {
   public closeNav() {
     this.isHandset$.subscribe(handset => {
       if (handset) {
-        this.drawer.close();
+        this.drawer.close().then();
       }
     });
   }
 
-  public onResize(event) {
+  public onResize() {
     this.isHandset$.subscribe(handset => {
       if (!handset) {
-        this.drawer.open();
+        this.drawer.open().then();
       }
     });
   }
