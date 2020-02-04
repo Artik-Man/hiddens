@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host=0.0.0.0 --base-href \"/hiddens/\" --servePath=\"/hiddens/\"",
-    "build": "ng build --prod --aot --base-href \"/hiddens/\"",
-    "deploy": "ng deploy --base-href \"/hiddens/\"",
+    "start": "ng serve --host=0.0.0.0 --base-href=\"/hiddens/\" --servePath=\"/hiddens/\"",
+    "build": "ng build --prod --aot --base-href=/hiddens/",
+    "deploy": "ng deploy --base-href=\"/hiddens/\"",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
